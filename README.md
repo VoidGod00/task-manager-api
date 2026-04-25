@@ -55,7 +55,41 @@ task-manager-api/
     └── validators/
         └── index.js
 ```
+# Design Decisions
 
+### Why two databases?
+The assignment specifically required it — PostgreSQL for users and MongoDB for tasks.
+This also makes sense in practice: user accounts are relational (structured, fixed schema),
+while tasks could evolve in shape over time (a good fit for a document store).
+
+### Why UUIDs for User IDs?
+UUIDs are harder to guess than sequential integers. Since the task's `userId` field is stored
+in MongoDB and references a PostgreSQL row, using a string UUID as the bridge keeps
+things simple without a foreign-key join across databases.
+
+### Why bcrypt with saltRounds = 10?
+bcrypt is the industry standard for password hashing. saltRounds = 10 gives a good
+balance: it's slow enough to defeat brute-force attacks but fast enough for a normal login.
+
+### Why JWT (stateless auth) over sessions?
+JWT tokens are self-contained — the server doesn't need to store any session state.
+This makes the API easy to scale horizontally.
+
+### Why Joi for validation instead of express-validator?
+Joi schemas are plain JavaScript objects and very readable. The `validate()` factory
+in `src/validators/index.js` keeps each route clean — validation is a middleware, not
+mixed into the controller logic.
+
+### Why PATCH for updates instead of PUT?
+`PATCH` is for partial updates; `PUT` would require sending the full resource.
+The assignment explicitly allows partial updates, so `PATCH` is the correct HTTP verb.
+
+### Why is error handling a 4-argument middleware?
+Express identifies error-handling middleware by the signature `(err, req, res, next)`.
+By passing all errors through `next(err)`, controllers stay clean and error formatting
+is centralised in one place.
+
+---
 ---
 
 ## Setup & Run
