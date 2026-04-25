@@ -1,0 +1,33 @@
+node_modules/
+ 
+# Environment variables - NEVER commit this
+.env
+.env.local
+.env.development
+.env.production
+ 
+# Logs
+logs/
+*.log
+npm-debug.log*
+ 
+# Runtime data
+pids/
+*.pid
+ 
+# Build output
+dist/
+build/
+ 
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+ 
+# Editor folders
+.vscode/
+.idea/
+ 
+# Docker volumes (if stored locally)
+pgdata/
+mongodata/
