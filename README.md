@@ -8,6 +8,14 @@ A RESTful backend API for managing tasks. Users can register, log in, and perfor
 
 ---
 
+## Demonstration Video
+
+Watch the full demo here (setup, register, login, CRUD, error handling, cross-user access test):
+
+[Click here to watch the demo video](https://drive.google.com/drive/folders/1QQvSUJmq5tjFSPVJ1RHgKMmviGzsNqDY?usp=sharing)
+
+---
+
 ## Tech Stack
 
 - Node.js + Express.js
@@ -83,7 +91,19 @@ MONGO_URI=mongodb://localhost:27017/taskmanager
 JWT_SECRET=your_long_random_secret_here
 ```
 
-### 4. Start the databases with Docker
+### 4. Check database credentials in docker-compose.yml
+
+> **Important:** Open `docker-compose.yml` in the root folder and check the PostgreSQL credentials. Make sure `PG_PASSWORD` in your `.env` file matches `POSTGRES_PASSWORD` in `docker-compose.yml` exactly.
+
+```yaml
+# docker-compose.yml
+environment:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: yourpassword   # ← must match PG_PASSWORD in .env
+  POSTGRES_DB: taskmanager
+```
+
+### 5. Start the databases with Docker
 
 ```bash
 docker-compose up -d
@@ -91,13 +111,13 @@ docker-compose up -d
 
 This starts PostgreSQL on port **5433** and MongoDB on port **27017**.
 
-### 5. Create the PostgreSQL database (first time only)
+### 6. Create the PostgreSQL database (first time only)
 
 ```bash
 docker exec -it task-manager-api-postgres-1 psql -U postgres -c "CREATE DATABASE taskmanager;"
 ```
 
-### 6. Start the server
+### 7. Start the server
 
 ```bash
 npm run dev
